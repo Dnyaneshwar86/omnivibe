@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OmniVibe — The All-in-One Super App Platform</title>
+  <meta name="description" content="OmniVibe PWA: Social Media, Reels, YouTube Streaming, LinkedIn Networking & X Microblogging in One Super App.">
+  <meta name="theme-color" content="#8b5cf6">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/logo.jpg">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebarNav">
+      <div class="brand-header">
+        <button class="btn-icon" style="border:none; background:transparent;" onclick="toggleSidebar()" title="Toggle Menu (☰)">
+          <i data-lucide="menu"></i>
+        </button>
+        <img src="assets/logo.jpg" alt="OmniVibe Logo" class="brand-logo">
+        <div>
+          <h1 class="brand-title">OmniVibe</h1>
+          <span class="brand-tagline">Super App MVP</span>
+        </div>
+      </div>
+
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-tab="feed">
+          <i data-lucide="home"></i>
+          <span>Feed (Social & Media)</span>
+        </button>
+        <button class="nav-btn" data-tab="reels">
+          <i data-lucide="film"></i>
+          <span>OmniReels (Shorts)</span>
+        </button>
+        <button class="nav-btn" data-tab="watch">
+          <i data-lucide="tv"></i>
+          <span>OmniWatch (Videos & Live)</span>
+        </button>
+        <button class="nav-btn" data-tab="network">
+          <i data-lucide="briefcase"></i>
+          <span>OmniJobs (LinkedIn & CV)</span>
+        </button>
+        <button class="nav-btn" data-tab="threads">
+          <i data-lucide="message-square-quote"></i>
+          <span>OmniThreads (X / Polls)</span>
+        </button>
+        <button class="nav-btn" data-tab="analytics">
+          <i data-lucide="bar-chart-3"></i>
+          <span>OmniAnalytics (Creator)</span>
+        </button>
+        <button class="nav-btn" data-tab="marketplace">
+          <i data-lucide="shopping-bag"></i>
+          <span>OmniMarket (Store)</span>
+        </button>
+        <button class="nav-btn" data-tab="saved">
+          <i data-lucide="bookmark"></i>
+          <span>Saved Vault (सेव्ह केलेल्या गोष्टी)</span>
+        </button>
+      </nav>
+
+
+      <div class="user-profile-summary">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="avatar">
+        <div class="user-info">
+          <h4>ज्ञानेश्वर (You)</h4>
+          <p>@dnyaneshwar_dev</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="searchInput" placeholder="OmniVibe वर व्हिडिओ, नोकऱ्या, ट्रेंड शोध..." oninput="handleSearch(this.value)">
+          <button style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--accent-cyan); cursor: pointer; display: flex; align-items: center;" onclick="startVoiceSearch()" title="बोलून शोधा (Voice Search)">
+            <i data-lucide="mic" id="micIcon"></i>
+          </button>
+        </div>
+
+
+        <div class="top-actions">
+          <!-- AI Multilingual Language Selector -->
+          <div style="position: relative; display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--glass-border); padding: 4px 10px; border-radius: var(--radius-full);">
+            <i data-lucide="globe" style="width:16px; color: var(--accent-cyan);"></i>
+            <select id="langSelector" style="background: transparent; border: none; color: #fff; font-size: 0.82rem; outline: none; cursor: pointer; font-weight:600;" onchange="changeLanguage(this.value)">
+              <option value="mr" selected style="background:#111625; color:#fff;">🚩 मराठी (Marathi)</option>
+              <option value="en" style="background:#111625; color:#fff;">🇬🇧 English</option>
+              <option value="hi" style="background:#111625; color:#fff;">🇮🇳 हिंदी (Hindi)</option>
+              <option value="es" style="background:#111625; color:#fff;">🇪🇸 Español</option>
+              <option value="fr" style="background:#111625; color:#fff;">🇫🇷 Français</option>
+            </select>
+          </div>
+
+          <!-- PWA Install App Button -->
+          <button class="btn-create" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; gap:6px;" onclick="promptInstallPwa()" title="Install OmniVibe App (PWA)">
+            <i data-lucide="download"></i>
+            <span>Install App</span>
+          </button>
+
+          <!-- Theme Switcher (Dark/Light Mode 🌙/☀️) -->
+          <button class="btn-icon" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode (🌙/☀️)">
+            <i data-lucide="moon" id="themeIcon"></i>
+          </button>
+
+          <button class="btn-icon" title="Notifications (Alerts)" onclick="openNotifModal()">
+            <i data-lucide="bell"></i>
+          </button>
+
+
+
+          <button class="btn-icon" title="Direct Messages (DM)" onclick="openDmModal()">
+            <i data-lucide="send"></i>
+          </button>
+          <button class="btn-create" style="background: transparent; border: 1px solid var(--primary); color: var(--primary);" onclick="openAuthModal()">
+            <i data-lucide="user-check"></i>
+            <span id="lblLoginBtn">लॉगिन / रजिस्ट्रेशन</span>
+          </button>
+          <button class="btn-create" onclick="openComposer()">
+            <i data-lucide="plus"></i>
+            <span id="lblCreateBtn">Create Content</span>
+          </button>
+        </div>
+
+
+      </header>
+
+      <!-- Workspace Layout Grid -->
+      <div style="padding: 24px;">
+        <div class="workspace-grid">
+          <!-- Main Content Feed -->
+          <section class="feed-container" id="mainContainer">
+            <!-- Dynamic content rendered by JS -->
+          </section>
+
+          <!-- Right Sidebar (Trending & Connections) -->
+          <aside class="right-sidebar" id="rightSidebar">
+            <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
+              <button class="btn-icon" style="width:30px; height:30px;" onclick="toggleRightSidebar()" title="Toggle Right Sidebar (🎛️)">
+                <i data-lucide="chevron-right" id="rightSidebarIcon"></i>
+              </button>
+            </div>
+
+            <!-- Trending Widget -->
+            <div class="widget-card">
+
+              <h3 class="widget-title"><i data-lucide="trending-up" style="color:var(--accent-pink);"></i> ट्रेंडिंग हॅशटॅग्स (#Trending)</h3>
+              
+              <div class="trending-item">
+                <div>
+                  <div class="trending-tag">#OmniVibe2026</div>
+                  <div class="trending-count">२५.४K पोस्ट्स</div>
+                </div>
+                <i data-lucide="sparkles" style="width:16px; color:var(--accent-cyan);"></i>
+              </div>
+
+              <div class="trending-item">
+                <div>
+                  <div class="trending-tag">#AIRevolution</div>
+                  <div class="trending-count">१८.९K पोस्ट्स</div>
+                </div>
+              </div>
+
+              <div class="trending-item">
+                <div>
+                  <div class="trending-tag">#SuperAppIndia</div>
+                  <div class="trending-count">१२.१K पोस्ट्स</div>
+                </div>
+              </div>
+
+              <div class="trending-item">
+                <div>
+                  <div class="trending-tag">#TechMarathi</div>
+                  <div class="trending-count">९.५K पोस्ट्स</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Suggested Connections Widget -->
+            <div class="widget-card">
+              <h3 class="widget-title"><i data-lucide="user-plus" style="color:var(--accent-cyan);"></i> सुचवलेले कनेक्शन्स (LinkedIn & IG)</h3>
+              
+              <div class="connect-item">
+                <div class="connect-user">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" class="avatar" style="width:36px; height:36px;">
+                  <div>
+                    <h5>राकेश देशमुख</h5>
+                    <p>AI Architect @ Google</p>
+                  </div>
+                </div>
+                <button class="btn-follow" onclick="this.innerText='जोडले ✓'">+ Connect</button>
+              </div>
+
+              <div class="connect-item">
+                <div class="connect-user">
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" class="avatar" style="width:36px; height:36px;">
+                  <div>
+                    <h5>स्नेहल कदम</h5>
+                    <p>UI/UX Designer & Creator</p>
+                  </div>
+                </div>
+                <button class="btn-follow" onclick="this.innerText='जोडले ✓'">+ Connect</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Create Post Modal -->
+  <div class="modal-backdrop" id="composerModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-heading);">नवीन पोस्ट तयार करा</h3>
+        <button class="modal-close" onclick="closeComposer()">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+        <span class="badge-tag">OmniVibe Feed</span>
+        <span class="badge-tag" style="background: rgba(6,182,212,0.2); color: var(--accent-cyan);">MP4 / Audio Supported</span>
+      </div>
+
+      <textarea class="composer-textarea" id="postContentInput" placeholder="तुमच्या मनात काय चालू आहे? व्हिडिओची कल्पना किंवा विचार शेअर करा..."></textarea>
+
+      <!-- Media Upload Preview / Simulation -->
+      <div id="mediaPreviewArea" style="margin-bottom: 16px; display: none;">
+        <div style="position: relative; border-radius: var(--radius-md); overflow: hidden; background: #000;">
+          <video id="videoPreview" controls style="width: 100%; max-height: 220px; display: none;"></video>
+          <img id="imagePreview" style="width: 100%; max-height: 220px; object-fit: cover; display: none;" />
+          <button onclick="clearMediaUpload()" style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); color:#fff; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer;">&times;</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 10px;">
+          <label class="btn-icon" title="Upload Video/Image" style="cursor: pointer;">
+            <i data-lucide="video"></i>
+            <input type="file" id="fileMediaInput" accept="video/mp4,image/*" style="display: none;" onchange="handleFileUpload(event)">
+          </label>
+          <button class="btn-icon" title="Add Poll" onclick="addPollToComposer()">
+            <i data-lucide="bar-chart-2"></i>
+          </button>
+          <button class="btn-icon" title="Add Hashtag" onclick="addHashtag('#OmniVibe')">
+            <i data-lucide="hash"></i>
+          </button>
+        </div>
+
+        <button class="btn-create" onclick="submitNewPost()">पब्लिश करा (Publish)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direct Messaging Modal -->
+  <div class="modal-backdrop" id="dmModal">
+
+    <div class="modal-card" style="max-width:600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-heading); display:flex; align-items:center; gap:8px;">
+          <i data-lucide="send" style="color:var(--accent-cyan);"></i> Direct Messaging (Unified DM Inbox)
+        </h3>
+        <button class="modal-close" onclick="closeDmModal()">&times;</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 180px 1fr; gap:14px; min-height:300px;">
+        <!-- DM User List -->
+        <div style="border-right:1px solid var(--glass-border); padding-right:10px;">
+          <div style="padding:8px; background:rgba(255,255,255,0.06); border-radius:var(--radius-md); margin-bottom:8px; cursor:pointer;" onclick="selectDmUser('राकेश देशमुख')">
+            <strong style="font-size:0.85rem; color:#fff;">राकेश देशमुख</strong>
+            <p style="font-size:0.72rem; color:var(--accent-cyan);">Online</p>
+          </div>
+          <div style="padding:8px; background:rgba(255,255,255,0.02); border-radius:var(--radius-md); cursor:pointer;" onclick="selectDmUser('स्नेहल कदम')">
+            <strong style="font-size:0.85rem; color:#fff;">स्नेहल कदम</strong>
+            <p style="font-size:0.72rem; color:var(--text-muted);">2h ago</p>
+          </div>
+        </div>
+
+        <!-- Chat Window -->
+        <div style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div id="chatMessages" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding-right:4px;">
+            <div style="align-self:flex-start; background:rgba(255,255,255,0.08); padding:8px 12px; border-radius:var(--radius-md); max-width:80%; font-size:0.85rem;">
+              नमस्कार! OmniVibe Super App प्रोजेक्टचा प्रोग्रेस कसा चालू आहे?
+            </div>
+            <div style="align-self:flex-end; background:var(--primary-gradient); color:#fff; padding:8px 12px; border-radius:var(--radius-md); max-width:80%; font-size:0.85rem;">
+              सर्व फीचर्स (Feed, Video, Jobs, DM & OmniCoins) सुरळीत काम करत आहेत! 🚀
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <input type="text" id="dmInput" placeholder="मेसेज टाईप करा..." style="flex:1; padding:8px 12px; border-radius:var(--radius-full); background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; font-size:0.85rem; outline:none;" onkeypress="if(event.key==='Enter') sendDmMessage()">
+            <button class="btn-create" style="padding:8px 14px;" onclick="sendDmMessage()"><i data-lucide="send"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Registration & Login Modal -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal-card" style="max-width:440px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-heading); display:flex; align-items:center; gap:8px;">
+          <i data-lucide="user-plus" style="color:var(--primary);"></i> <span id="lblAuthTitle">युझर रजिस्ट्रेशन / लॉगिन</span>
+        </h3>
+        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      </div>
+
+      <!-- One-Tap Social Logins -->
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+        <button class="btn-create" style="background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); color:#fff; justify-content:center; gap:10px;" onclick="handleSocialLogin('Google')">
+          <i data-lucide="chrome" style="color:#ea4335;"></i> Google द्वारे सुरू ठेवा (Continue with Google)
+        </button>
+        <button class="btn-create" style="background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); color:#fff; justify-content:center; gap:10px;" onclick="handleSocialLogin('Apple')">
+          <i data-lucide="apple" style="color:#fff;"></i> Apple द्वारे सुरू ठेवा (Continue with Apple)
+        </button>
+        <button class="btn-create" style="background:rgba(59, 89, 152, 0.2); border:1px solid #3b5998; color:#fff; justify-content:center; gap:10px;" onclick="handleSocialLogin('Facebook')">
+          <i data-lucide="facebook" style="color:#3b5998;"></i> Facebook द्वारे सुरू ठेवा
+        </button>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div style="flex:1; height:1px; background:var(--glass-border);"></div>
+        <span style="font-size:0.75rem; color:var(--text-muted);">किंवा (OR)</span>
+        <div style="flex:1; height:1px; background:var(--glass-border);"></div>
+      </div>
+
+      <div style="display:flex; border-bottom:1px solid var(--glass-border); margin-bottom:16px;">
+        <button id="tabAuthLogin" style="flex:1; padding:8px; background:transparent; border:none; color:var(--accent-cyan); font-weight:700; border-bottom:2px solid var(--accent-cyan); cursor:pointer;" onclick="switchAuthTab('login')">लॉगिन (Sign In)</button>
+        <button id="tabAuthOtp" style="flex:1; padding:8px; background:transparent; border:none; color:var(--text-muted); font-weight:700; border-bottom:2px solid transparent; cursor:pointer;" onclick="switchAuthTab('otp')">मोबाईल OTP</button>
+        <button id="tabAuthSignup" style="flex:1; padding:8px; background:transparent; border:none; color:var(--text-muted); font-weight:700; border-bottom:2px solid transparent; cursor:pointer;" onclick="switchAuthTab('signup')">रजिस्ट्रेशन</button>
+      </div>
+
+      <form onsubmit="handleAuthSubmit(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <div id="signupNameGroup" style="display:none;">
+          <label style="font-size:0.8rem; color:var(--text-muted);">पूर्ण नाव (Full Name)</label>
+          <input type="text" id="authName" placeholder="ज्ञानेश्वर" style="width:100%; padding:10px; border-radius:var(--radius-md); background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; font-size:0.9rem; outline:none;">
+        </div>
+
+        <div id="otpMobileGroup" style="display:none;">
+          <label style="font-size:0.8rem; color:var(--text-muted);">मोबाईल नंबर (Mobile Number)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="tel" id="authMobile" placeholder="+91 9876543210" style="flex:1; padding:10px; border-radius:var(--radius-md); background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; font-size:0.9rem; outline:none;">
+            <button type="button" class="btn-create" style="padding:8px 12px; font-size:0.8rem;" onclick="sendOtp()">Send OTP</button>
+          </div>
+        </div>
+
+        <div id="emailPassGroup">
+          <label style="font-size:0.8rem; color:var(--text-muted);">ईमेल किंवा आयडी (Email ID)</label>
+          <input type="text" id="authEmail" placeholder="user@omniplatform.com" style="width:100%; padding:10px; border-radius:var(--radius-md); background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; font-size:0.9rem; outline:none; margin-bottom:10px;">
+
+          <label style="font-size:0.8rem; color:var(--text-muted);">पासवर्ड (Password)</label>
+          <input type="password" id="authPass" placeholder="••••••••" style="width:100%; padding:10px; border-radius:var(--radius-md); background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; font-size:0.9rem; outline:none;">
+        </div>
+
+        <!-- Profile Feed Customizer Preference -->
+        <div id="feedPrefGroup" style="margin-top:4px;">
+          <label style="font-size:0.8rem; color:var(--text-muted);">प्राधान्य (Feed Preference - काय पाहायला आवडेल?)</label>
+          <select id="authFeedPref" style="width:100%; padding:10px; border-radius:var(--radius-md); background:#111625; border:1px solid var(--glass-border); color:#fff; font-size:0.85rem; outline:none;">
+            <option value="all">🌐 सर्व मीडिया (Videos, Blogs & Jobs)</option>
+            <option value="videos">📹 4K Videos & Reels (Entertainment)</option>
+            <option value="blogs">📝 Blogs & News (Information)</option>
+            <option value="jobs">💼 Jobs & Networking (Careers)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-create" style="width:100%; justify-content:center; margin-top:8px; padding:12px;" id="lblAuthSubmitBtn">
+          प्रवेश करा (Sign In)
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Unified Filterable Notification Modal -->
+  <div class="modal-backdrop" id="notifModal">
+    <div class="modal-card" style="max-width:500px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-heading); display:flex; align-items:center; gap:8px;">
+          <i data-lucide="bell" style="color:var(--accent-pink);"></i> युनिफाईड नोटिफिकेशन्स (Unified Alerts)
+        </h3>
+        <button class="modal-close" onclick="closeNotifModal()">&times;</button>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div style="display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; padding-bottom:4px;">
+        <button class="tag-btn" style="background:var(--primary); color:#fff;" onclick="filterNotifs('all')">सर्व (All)</button>
+        <button class="tag-btn" onclick="filterNotifs('video')">📹 व्हिडिओज (YouTube)</button>
+        <button class="tag-btn" onclick="filterNotifs('social')">❤️ सोशल & कमेंट्स</button>
+        <button class="tag-btn" onclick="filterNotifs('jobs')">💼 नोकऱ्या (Jobs)</button>
+      </div>
+
+      <div id="notifList" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto;">
+        <div style="background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:var(--radius-md); display:flex; align-items:center; gap:12px;">
+          <i data-lucide="video" style="color:var(--accent-cyan);"></i>
+          <div>
+            <strong style="font-size:0.85rem; color:#fff;">क्रिएटर हबने नवीन 4K व्हिडिओ अपलोड केला!</strong>
+            <p style="font-size:0.75rem; color:var(--text-muted);">५ मिनिटांपूर्वी • YouTube Video Alert</p>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:var(--radius-md); display:flex; align-items:center; gap:12px;">
+          <i data-lucide="heart" style="color:var(--accent-pink);"></i>
+          <div>
+            <strong style="font-size:0.85rem; color:#fff;">प्रिया पाटीलने तुमच्या पोस्टला लाईक केले.</strong>
+            <p style="font-size:0.75rem; color:var(--text-muted);">१५ मिनिटांपूर्वी • Facebook Alert</p>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:var(--radius-md); display:flex; align-items:center; gap:12px;">
+          <i data-lucide="briefcase" style="color:#10b981;"></i>
+          <div>
+            <strong style="font-size:0.85rem; color:#fff;">OmniVibe Tech कडून तुमच्या अर्जावर प्रतिसाद आला.</strong>
+            <p style="font-size:0.75rem; color:var(--text-muted);">१ तासापूर्वी • LinkedIn Job Alert</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom-Right Floating Messenger Chat Dock (Facebook Style) -->
+  <div id="floatingMessengerDock" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+    <!-- Active Mini Chat Window (Collapsible) -->
+    <div id="miniChatWindow" style="width: 300px; height: 360px; background: #111625; border: 1px solid var(--glass-border-glow); border-radius: var(--radius-lg); box-shadow: var(--shadow-glow); display: none; flex-direction: column; overflow: hidden;">
+      <div style="background: var(--primary-gradient); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; color: #fff;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" class="avatar" style="width:28px; height:28px;">
+          <span style="font-size: 0.85rem; font-weight: 700;">राकेश देशमुख</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button onclick="startOmniMeetCall('video')" style="background:transparent; border:none; color:#fff; cursor:pointer;" title="HD Video Call (OmniMeet)"><i data-lucide="video" style="width:16px;"></i></button>
+          <button onclick="startOmniMeetCall('audio')" style="background:transparent; border:none; color:#fff; cursor:pointer;" title="Audio Call"><i data-lucide="phone" style="width:16px;"></i></button>
+          <button onclick="toggleMiniChat()" style="background:transparent; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
+        </div>
+      </div>
+
+
+      <div id="miniChatLogs" style="flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem;">
+        <div style="align-self: flex-start; background: rgba(255,255,255,0.08); padding: 6px 10px; border-radius: var(--radius-md); color: #fff;">
+          हाय! OmniVibe वर नवीन व्हिडिओ पाहिला का?
+        </div>
+        <div style="align-self: flex-end; background: var(--primary); padding: 6px 10px; border-radius: var(--radius-md); color: #fff;">
+          होय! 4K क्वालिटी अतिशय उत्तम आहे. 🚀
+        </div>
+      </div>
+
+      <div style="padding: 8px; border-top: 1px solid var(--glass-border); display: flex; gap: 6px;">
+        <input type="text" id="miniChatInput" placeholder="चॅट करा..." style="flex:1; padding:6px 10px; border-radius:var(--radius-full); background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; font-size:0.8rem; outline:none;" onkeypress="if(event.key==='Enter') sendMiniChatMessage()">
+        <button class="btn-create" style="padding:4px 10px;" onclick="sendMiniChatMessage()"><i data-lucide="send" style="width:14px;"></i></button>
+      </div>
+    </div>
+
+    <!-- Floating Chat Trigger Head -->
+    <button onclick="toggleMiniChat()" style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-gradient); border: 2px solid rgba(255,255,255,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5); transition: transform 0.2s ease;" title="Floating Messenger Dock">
+      <i data-lucide="message-circle" style="width:26px; height:26px;"></i>
+    </button>
+  </div>
+
+  <!-- Spotify-Style Persistent Bottom Audio/Podcast Mini-Player -->
+  <div id="persistentAudioDock" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(17, 22, 37, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border-glow); z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80" class="avatar" style="width: 40px; height: 40px; border-radius: var(--radius-md);">
+      <div>
+        <h4 style="font-size: 0.88rem; font-weight: 700; color: #fff;">मराठी पॉडकास्ट #०४ — भविष्यातील टेक क्रांती</h4>
+        <p style="font-size: 0.74rem; color: var(--accent-cyan);">मराठी पॉडकास्ट हब • Playing Background Audio</p>
+      </div>
+    </div>
+
+    <!-- Audio Player Controls -->
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button onclick="prevAudio()" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer;"><i data-lucide="skip-back"></i></button>
+      <button onclick="toggleAudioPlay()" id="audioPlayBtn" style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-gradient); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <i data-lucide="pause" id="audioPlayIcon"></i>
+      </button>
+      <button onclick="nextAudio()" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer;"><i data-lucide="skip-forward"></i></button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <i data-lucide="volume-2" style="color: var(--text-muted); width:18px;"></i>
+      <button onclick="closeAudioDock()" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem;">&times;</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+
+
+
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
